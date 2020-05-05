@@ -1,0 +1,24 @@
+{
+  "name": "ibis",
+  "version": "1.0.0",
+  "main": "dist/ibis.js",
+  "author": "th3rius <gabrielhk3@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "prettier": "prettier --write src/**/*"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^13.13.4",
+    "prettier": "^2.0.5",
+    "typescript": "^3.8.3"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "none",
+    "arrowParens": "avoid"
+  }
+}
