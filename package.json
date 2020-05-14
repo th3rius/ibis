@@ -2,16 +2,21 @@
   "name": "ibis",
   "version": "1.0.0",
   "main": "dist/ibis.js",
+  "types": "dist/ibis.d.ts",
   "author": "th3rius <gabrielhk3@gmail.com>",
   "license": "MIT",
   "private": true,
   "scripts": {
     "build": "tsc",
-    "prettier": "prettier --write src/**/*"
+    "prettier": "prettier --write src/**/*",
+    "lint": "eslint . --ext .ts --fix"
   },
   "dependencies": {},
   "devDependencies": {
     "@types/node": "^13.13.4",
+    "@typescript-eslint/eslint-plugin": "^2.31.0",
+    "@typescript-eslint/parser": "^2.31.0",
+    "eslint": "^7.0.0",
     "prettier": "^2.0.5",
     "typescript": "^3.8.3"
   },

@@ -1,26 +1,28 @@
-import { Stream } from 'stream'
+import { Transform } from 'stream'
 
-export class Splitter extends Stream.Writable {
-  private _bytes: Buffer
-  private _size: number
+export const splitter = () => {
+  let bytes: Buffer
+  let size: number
 
-  split() {
-    if (this._bytes.length > 4) {
-      this._size = this._size ? this._size : this._bytes.readUInt32LE()
-      if (this._size + 4 <= this._bytes.length) {
-        this.emit('message', this._bytes.slice(4, this._size + 4))
-        this._bytes = this._bytes.slice(this._size + 4)
-        this._size = null
-        this.split()
+  return new Transform({
+    transform(chunk: Buffer, enc: string, done: () => void) {
+      const split = () => {
+        if (bytes.length > 4) {
+          if (!size) size = bytes.readUInt32LE() + 4
+          if (size <= bytes.length) {
+            this.push(bytes.slice(4, size))
+            bytes = bytes.slice(size)
+            size = 0
+            split()
+          }
+        }
       }
-    }
-  }
 
-  _write(data: Buffer, enc: string, next: () => void) {
-    this._bytes = this._bytes
-      ? Buffer.concat([this._bytes, data], this._bytes.length + data.length)
-      : data
-    this.split()
-    next()
-  }
+      bytes = bytes
+        ? Buffer.concat([bytes, chunk], bytes.length + chunk.length)
+        : chunk
+      split()
+      done()
+    }
+  })
 }

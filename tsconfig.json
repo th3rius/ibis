@@ -3,6 +3,10 @@
     "outDir": "dist",
     "allowSyntheticDefaultImports": true,
     "target": "es6",
-    "inlineSourceMap": true
-  }
+    "module": "commonjs",
+    "strict": true,
+    "inlineSourceMap": true,
+    "declaration": true
+  },
+  "lib": ["es6"]
 }
