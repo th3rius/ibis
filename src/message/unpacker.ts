@@ -1,4 +1,4 @@
-import zlib from 'zlib'
+import * as zlib from 'zlib'
 
 export class Unpacker {
   readonly code: number
@@ -35,11 +35,13 @@ export class Unpacker {
     return ip.reverse().join('.')
   }
 
-  decompress(cb: (decompressed: this) => void) {
-    zlib.inflate(this._bytes, (err, res) => {
-      if (err) throw err
-      this._bytes = res
-      cb(this)
+  decompress(cb: (err: Error | null, compressed: this) => void) {
+    zlib.inflate(this._bytes.slice(this._offset), (err, res) => {
+      this._bytes = Buffer.concat(
+        [this._bytes.slice(0, this._offset), res],
+        res.length + this._offset
+      )
+      cb(err, this)
     })
   }
 }

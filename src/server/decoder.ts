@@ -16,12 +16,15 @@ export const decoder = new Writable({
           })
         } else {
           this.emit('login', { code: u.code, success, reason: u.str() })
-          this.end((cb: () => void) => cb)
+          this.end((cb: () => void) => {
+            return cb
+          })
         }
         break
       }
 
       case 18:
+        // console.log(message)
         this.emit('peer', {
           code: u.code,
           username: u.str(),

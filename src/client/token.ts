@@ -1,1 +1,3 @@
-export const token = () => Math.floor(Math.random() * (2 ** 32 - 1))
+export const token = () => {
+  return Math.floor(Math.random() * (2 ** 32 - 1))
+}

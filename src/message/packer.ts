@@ -34,15 +34,14 @@ export class Packer {
     return this
   }
 
-  compress(cb: (compressed: this) => void) {
+  compress(cb: (err: Error | null, compressed: this) => void) {
     const cl = this.byte ? 1 : 4 // the code length
     zlib.deflate(this._bytes.slice(cl), (err, res) => {
-      if (err) throw err
       this._bytes = Buffer.concat(
         [this._bytes.slice(0, cl), res],
         res.length + cl
       )
-      cb(this)
+      cb(err, this)
     })
   }
 

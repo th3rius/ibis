@@ -1,10 +1,11 @@
 import { Socket } from 'net'
 import { Packer } from '../message/packer'
-import { splitter } from '../message/splitter'
 
 export class Peer {
   private constructor(private _socket: Socket) {
     this._socket.setNoDelay(true)
+    this._socket.setTimeout(3000, this._socket.destroy)
+    this._socket.on('data', console.log)
   }
 
   static connect(host: string, port: number) {
@@ -13,10 +14,6 @@ export class Peer {
 
   static accept(socket: Socket) {
     return new this(socket)
-  }
-
-  listen() {
-    return this._socket.pipe(splitter())
   }
 
   pierceFirewall(token: number) {
