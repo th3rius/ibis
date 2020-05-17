@@ -11,7 +11,7 @@
     "start": "nodemon -w 'src/**/*' -e 'ts' -x sucrase-node src/ibis.ts -q"
   },
   "devDependencies": {
-    "@types/node": "^13.13.4",
+    "@types/node": "^14.0.1",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "eslint": "^7.0.0",
