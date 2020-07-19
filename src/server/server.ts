@@ -1,7 +1,8 @@
 import { Packer } from '../message/packer'
 import { Socket } from 'net'
-import { splitter } from '../message/splitter'
+import { Splitter } from '../message/splitter'
 import { decoder } from './decoder'
+import { Duplex } from 'stream'
 
 export class Server {
   static readonly ip = '208.76.170.59'
@@ -9,7 +10,7 @@ export class Server {
   readonly version = 183
 
   private constructor(private _socket: Socket) {
-    this._socket.setNoDelay(true)
+    this._socket.on('error', console.log)
   }
 
   static connect() {
@@ -17,7 +18,8 @@ export class Server {
   }
 
   listen() {
-    return this._socket.pipe(splitter()).pipe(decoder)
+    const splitter = new Splitter()
+    return this._socket.pipe(splitter).pipe(decoder())
   }
 
   login(username: string, password: string) {
