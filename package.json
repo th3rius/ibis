@@ -26,7 +26,7 @@
     "homepage": "https://github.com/th3rius/ibis#readme",
     "dependencies": {
         "chokidar": "^3.4.2",
-        "electron": "^10.0.0",
+        "electron": "^10.1.0",
         "react": "^16.13.1",
         "react-dom": "^16.13.1"
     },
