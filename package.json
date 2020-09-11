@@ -27,7 +27,7 @@
     "dependencies": {
         "@babel/runtime": "^7.11.2",
         "chokidar": "^3.4.2",
-        "electron": "^10.0.0",
+        "electron": "^10.1.1",
         "react": "^16.13.1",
         "react-dom": "^16.13.1"
     },
