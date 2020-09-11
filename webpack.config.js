@@ -1,39 +1,43 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const path = require('path')
-
-const commonConfig = {
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: '[name].js'
-    },
-    module: {
-        rules: [
-            {
-                test: /\.(js|jsx)$/,
-                exclude: /node_modules/,
-                loader: 'babel-loader'
-            }
-        ]
-    },
-    resolve: {
-        extensions: ['.js', '.jsx']
-    }
-}
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 
 module.exports = [
-    Object.assign(
+  {
+    target: 'electron-main',
+    entry: { main: './src/main.js' },
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: 'main.js',
+    },
+    module: {
+      rules: [
         {
-            target: 'electron-main',
-            entry: { main: './src/main.js' }
+          include: /src/,
+          test: /\.(js)$/,
+          use: 'babel-loader',
         },
-        commonConfig
-    ),
-    Object.assign(
+      ],
+    },
+  },
+  {
+    entry: { index: './src/index.jsx' },
+    target: 'electron-renderer',
+    plugins: [new HtmlWebpackPlugin()],
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: '[name].js',
+    },
+    module: {
+      rules: [
         {
-            target: 'electron-renderer',
-            entry: { index: './src/index.jsx' },
-            plugins: [new HtmlWebpackPlugin()]
+          include: /src/,
+          test: /\.(jsx?)$/,
+          use: 'babel-loader',
         },
-        commonConfig
-    )
-]
+      ],
+    },
+    resolve: {
+      extensions: ['.js', '.jsx'],
+    },
+  },
+];
