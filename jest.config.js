@@ -1,3 +1,4 @@
-{
-  "preset": "ts-jest"
-}
+module.exports = {
+  bail: true,
+  verbose: true,
+};

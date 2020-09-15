@@ -10,11 +10,13 @@ import { Transform } from 'stream';
  * @returns {module:stream.internal.Transform}
  */
 function splitter() {
+  /** @type {Buffer} */
   let queue;
+  /** @type {number?} */
   let size;
 
   return new Transform({
-    transform(chunk, enc, cb) {
+    transform(chunk, _enc, cb) {
       const split = () => {
         if (queue.length > 4) {
           // Are we reading a new message?

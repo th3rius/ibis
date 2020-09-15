@@ -14,7 +14,7 @@ const serverMessages = {
    * @code 1
    * @param {string} username
    * @param {string} password
-   * @return {Buffer}
+   * @returns {Buffer} Message
    */
   login(username, password) {
     return new Packer(1).str(username).str(password).uint32(182)
@@ -26,7 +26,7 @@ const serverMessages = {
    *
    * @code 2
    * @param {number} port
-   * @return {Buffer}
+   * @returns {Buffer} Message
    */
   setListenPort(port) {
     return new Packer(2).uint32(port).msg();
@@ -37,7 +37,7 @@ const serverMessages = {
    *
    * @code 3
    * @param {string} username
-   * @return {Buffer}
+   * @returns {Buffer} Message
    */
   getPeerAddr(username) {
     return new Packer(3).str(username).msg();
@@ -48,7 +48,7 @@ const serverMessages = {
    *
    * @code 5
    * @param {string} username
-   * @return {Buffer}
+   * @returns {Buffer} Message
    */
   watchUser(username) {
     return new Packer(5).str(username).msg();
@@ -59,7 +59,7 @@ const serverMessages = {
    *
    * @code 7
    * @param {string} username
-   * @return {Buffer}
+   * @returns {Buffer} Message
    */
   getStatus(username) {
     return new Packer(7).str(username).msg();
@@ -71,7 +71,7 @@ const serverMessages = {
    * @code 13
    * @param {string} room
    * @param {string} message
-   * @return {Buffer}
+   * @returns {Buffer} Message
    */
   sendRoomMsg(room, message) {
     return new Packer(13).str(room).str(message).msg();
@@ -81,8 +81,8 @@ const serverMessages = {
    * Join a room.
    *
    * @code 14
-   * @param room
-   * @return {Buffer}
+   * @param {string} room
+   * @returns {Buffer} Message
    */
   joinRoom(room) {
     return new Packer(14).str(room).msg();
@@ -92,8 +92,8 @@ const serverMessages = {
    * Leave a room.
    *
    * @code 15
-   * @param room
-   * @return {Buffer}
+   * @param {string} room
+   * @returns {Buffer} Message
    */
   leaveRoom(room) {
     return new Packer(15).str(room).msg();
@@ -107,7 +107,7 @@ const serverMessages = {
    * @param {number} token
    * @param  {string} username
    * @param {string} type
-   * @return {Buffer}
+   * @returns {Buffer} Message
    */
   connectToPeer(token, username, type) {
     return new Packer(18).uint32(token).str(username).str(type)
@@ -120,7 +120,7 @@ const serverMessages = {
    * @code 22
    * @param {string} username
    * @param {string} message
-   * @return {Buffer}
+   * @returns {Buffer} Message
    */
   sendPrivateMsg(username, message) {
     return new Packer(22).str(username).str(message).msg();
@@ -132,7 +132,7 @@ const serverMessages = {
    *
    * @code 23
    * @param {number} id - The message ID.
-   * @return {Buffer}
+   * @returns {Buffer} Message
    */
   ackMsg(id) {
     return new Packer(23).uint32(id).msg();
@@ -144,7 +144,7 @@ const serverMessages = {
    * @code 26
    * @param {number} ticket - A number used to track the search results.
    * @param  {string} query
-   * @return {Buffer}
+   * @returns {Buffer} Message
    */
   search(ticket, query) {
     return new Packer(26).uint32(ticket).str(query).msg();
@@ -154,8 +154,8 @@ const serverMessages = {
    * Set your online status.
    *
    * @code 28
-   * @param status
-   * @return {Buffer}
+   * @param {number} status
+   * @returns {Buffer} Message
    */
   setStatus(status) {
     return new Packer(28).uint32(status).msg();
@@ -165,7 +165,7 @@ const serverMessages = {
    * Test the connection.
    *
    * @code 32
-   * @return {Buffer}
+   * @returns {Buffer} Message
    */
   ping() {
     return new Packer(32).msg();
@@ -177,7 +177,7 @@ const serverMessages = {
    * @code 35
    * @param {number} folders
    * @param {number} files
-   * @return {Buffer}
+   * @returns {Buffer} Message
    */
   setSharedFolders(folders, files) {
     return new Packer(35).uint32(folders).uint32(files).msg();
@@ -189,7 +189,8 @@ const serverMessages = {
    * @code 42
    * @param {string} username
    * @param {number} ticket - A number used to track the search results.
-   * @param query
+   * @param {string} query
+   * @returns {Buffer} Message
    */
   searchFromUser(username, ticket, query) {
     return new Packer(42).str(username).uint32(ticket).str(query)
@@ -201,7 +202,7 @@ const serverMessages = {
    *
    * @code 51
    * @param {string} item
-   * @return {Buffer}
+   * @returns {Buffer} Message
    */
   like(item) {
     return new Packer(51).str(item).msg();
@@ -212,7 +213,7 @@ const serverMessages = {
    *
    * @code 52
    * @param {string} item
-   * @return {Buffer}
+   * @returns {Buffer} Message
    */
   unlike(item) {
     return new Packer(52).str(item).msg();
@@ -222,7 +223,7 @@ const serverMessages = {
    * Request your list of recommendations.
    *
    * @code 54
-   * @return {Buffer}
+   * @returns {Buffer} Message
    */
   getRecommendations() {
     return new Packer(54).msg();
@@ -230,7 +231,7 @@ const serverMessages = {
 
   /**
    * @code 56
-   * @return {Buffer}
+   * @returns {Buffer} Message
    */
   getGlobalRecommendations() {
     return new Packer(56).msg();
@@ -241,7 +242,7 @@ const serverMessages = {
    *
    * @code 57
    * @param {string} username
-   * @return {Buffer}
+   * @returns {Buffer} Message
    */
   getUserLikes(username) {
     return new Packer(57).str(username).msg();
@@ -251,7 +252,7 @@ const serverMessages = {
    * Request the list of rooms.
    *
    * @code 64
-   * @return {Buffer}
+   * @returns {Buffer} Message
    */
   getRooms() {
     return new Packer(64).msg();
@@ -261,7 +262,7 @@ const serverMessages = {
    * Request a list of privileged users.
    *
    * @code 69
-   * @return {Buffer}
+   * @returns {Buffer} Message
    */
   getPrivilegedUsers() {
     return new Packer(69).msg();

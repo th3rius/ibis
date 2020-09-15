@@ -10,15 +10,16 @@ import Unpacker from './unpacker';
  */
 function serverDecoder() {
   return new Writable({
-    write(message, enc, cb) {
+    write(message, _enc, cb) {
       const unp = new Unpacker(message);
       try {
         switch (unp.code) {
           /**
+           * Login response.
+           *
            * @code 1
            * @event login
-           * @type {object}
-           * @property {boolean} success
+           * @type {{success: boolean, motd: string?, ip: string?, reason: string?}}
            */
           case 1: {
             const success = unp.bool();
@@ -67,7 +68,7 @@ function serverDecoder() {
                   attrs,
                 };
               }
-              this.push({
+              this.emit('searchResult', {
                 username,
                 ticket,
                 results,
@@ -77,12 +78,12 @@ function serverDecoder() {
 
           /**
            * @code 1
-           * @event login
+           * @event
            * @type {object}
            * @property {boolean} success
            */
           case 18:
-            this.push({
+            this.emit('', {
               username: unp.str(),
               type: unp.str(),
               ip: unp.ip(),

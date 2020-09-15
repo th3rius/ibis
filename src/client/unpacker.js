@@ -14,59 +14,62 @@ class Unpacker {
     this.off = 0;
     this.bytes = buffer;
     if (byte) {
-      this.code = this.bytes.readUInt32LE(this.off);
-      this.off += 4;
-    } else {
       this.code = this.bytes.readUInt8(this.off);
       this.off += 1;
+    } else {
+      this.code = this.bytes.readUInt32LE(this.off);
+      this.off += 4;
     }
   }
 
-  /** @return {boolean} */
+  /** @returns {boolean} */
   bool() {
-    return !!this.bytes.readUInt8(this.off + 1);
+    const bool = !!this.bytes.readUInt8(this.off);
+    this.off += 1;
+    return bool;
   }
 
-  /** @return {number} */
+  /** @returns {number} */
   uint8() {
-    return this.bytes.readUInt8(this.off + 1);
+    const int = this.bytes.readUInt8(this.off);
+    this.off += 1;
+    return int;
   }
 
-  /** @return {number} */
+  /** @returns {number} */
   uint32() {
     const int = this.bytes.readUInt32LE(this.off);
     this.off += 4;
     return int;
   }
 
-  /** @return {bigint} */
+  /** @returns {bigint} */
   uint64() {
     const int = this.bytes.readBigUInt64LE(this.off);
     this.off += 8;
     return int;
   }
 
-  /** @return {string} */
+  /** @returns {string} */
   str() {
     const size = this.bytes.readUInt32LE(this.off);
     this.off += 4;
-    const str = this.bytes.toString(
-      'utf8',
-      (this.off),
-      (this.off + size),
-    );
+    const str = this.bytes.toString('utf8', this.off, this.off + size);
     this.off += size;
     return str;
   }
 
-  /** @return {string} */
+  /** @returns {string} */
   ip() {
     const ip = Array(4);
-    for (let i = 0; i < ip.length; i + 1) ip[i] = this.bytes.readUInt8(this.off + 1);
+    for (let i = 0; i < ip.length; i += 1) {
+      ip[i] = this.bytes.readUInt8(this.off);
+      this.off += 1;
+    }
     return ip.reverse().join('.');
   }
 
-  /** @callback cb */
+  /** @param {(err: Error?, decompressed: this) => void} cb */
   decompress(cb) {
     zlib.inflate(this.bytes.slice(this.off), (err, res) => {
       this.bytes = Buffer.concat([this.bytes.slice(0, this.off), res]);

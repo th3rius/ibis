@@ -24,7 +24,7 @@ class Packer {
 
   /**
    * @param {number} int
-   * @return {Packer}
+   * @returns {Packer} Packer
    */
   uint32(int) {
     const buff = Buffer.alloc(4);
@@ -35,7 +35,7 @@ class Packer {
 
   /**
    * @param {number} int
-   * @return {Packer}
+   * @returns {Packer} Packer
    */
   uint64(int) {
     const buff = Buffer.alloc(8);
@@ -46,7 +46,7 @@ class Packer {
 
   /**
    * @param {string} str
-   * @return {Packer}
+   * @returns {Packer}
    */
   str(str) {
     const buff = Buffer.alloc(4 + str.length);
@@ -56,7 +56,7 @@ class Packer {
     return this;
   }
 
-  /** @callback cb */
+  /** @param {(err: Error?, compressed: this) => void} cb */
   compress(cb) {
     // Don't compress the code
     const codeLen = this.byte ? 1 : 4;
@@ -66,7 +66,7 @@ class Packer {
     });
   }
 
-  /** @return {Buffer} */
+  /** @returns {Buffer} */
   msg() {
     const buff = Buffer.alloc(4);
     buff.writeUInt32LE(this.bytes.length);

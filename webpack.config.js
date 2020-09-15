@@ -4,6 +4,7 @@ const path = require('path');
 module.exports = [
   {
     target: 'electron-main',
+    mode: 'development',
     entry: { main: './src/main.js' },
     output: {
       path: path.resolve(__dirname, 'dist'),
@@ -22,6 +23,7 @@ module.exports = [
   {
     entry: { index: './src/index.jsx' },
     target: 'electron-renderer',
+    mode: 'development',
     plugins: [new HtmlWebpackPlugin()],
     output: {
       path: path.resolve(__dirname, 'dist'),
@@ -38,6 +40,10 @@ module.exports = [
     },
     resolve: {
       extensions: ['.js', '.jsx'],
+    },
+    devServer: {
+      contentBase: path.join(__dirname, 'dist'),
+      compress: true,
     },
   },
 ];
