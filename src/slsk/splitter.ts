@@ -4,21 +4,21 @@ import {Transform} from "stream";
  * Transform that delimits (splits and/or concatenates) streams of bytes.
  */
 function splitter() {
-  let queue = [];
+  let queue: Buffer[] = [];
   let queueLength = 0;
-  let messageLength;
+  let messageLength: number | undefined;
 
-  function split(bytes) {
+  function split(this: Transform, bytes?: Buffer) {
     // Are we reading a new message?
     if (messageLength) {
       // If we have enough bytes, emit the message and check again. Otherwise,
       // wait for more.
       if (queueLength >= messageLength) {
         const data = bytes ?? Buffer.concat(queue, queueLength);
-        const message = data.slice(null, messageLength);
+        const message = data.slice(undefined, messageLength);
         const tail = data.slice(messageLength);
         queueLength -= messageLength;
-        messageLength = null;
+        messageLength = undefined;
         queue = [tail];
         this.push(message);
         split.call(this, tail);

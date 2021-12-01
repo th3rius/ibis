@@ -1,5 +1,5 @@
-const zlib = require("zlib");
-const util = require("util");
+import * as zlib from "zlib";
+import * as util from "util";
 
 const inflate = util.promisify(zlib.inflate);
 

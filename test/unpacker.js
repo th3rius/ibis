@@ -17,6 +17,4 @@ describe("Unpacker", () => {
     const unp = new Unpacker(message, true);
     assert.strictEqual(unp.code, 69);
   });
-
-
 });

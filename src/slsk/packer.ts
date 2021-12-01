@@ -1,5 +1,5 @@
-const zlib = require("zlib");
-const util = require("util");
+import * as zlib from "zlib";
+import * as util from "util";
 
 const deflate = util.promisify(zlib.deflate);
 
@@ -9,7 +9,7 @@ const deflate = util.promisify(zlib.deflate);
  * Content is appended to the message according to the packing order.
  */
 class Packer {
-  private body: Buffer[];
+  private readonly body: Buffer[];
   private bodyLength: number;
 
   constructor(code: number, byte = false) {
@@ -69,7 +69,7 @@ class Packer {
   }
 
   async msgCompressed() {
-    const body = await deflate(this.body);
+    const body = await deflate(Buffer.concat(this.body));
     const header = Buffer.allocUnsafe(4);
     header.writeUInt32LE(body.length);
     return Buffer.concat([header, body]);

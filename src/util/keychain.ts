@@ -1,23 +1,18 @@
+import * as keytar from "keytar";
+
 class Keychain {
-  constructor(service = "ibis") {
-    const keytar = require("keytar");
-    if (!keytar) {
-      throw new Error("System keychain unavailable");
-    }
-    this.keytar = keytar;
-    this.service = service;
+  constructor(readonly service = "ibis") {}
+
+  setToken(account: string, token: string) {
+    return keytar.setPassword(this.service, account, token);
   }
 
-  setToken(account, token) {
-    return this.keytar.setPassword(this.service, account, token);
+  getToken(account: string) {
+    return keytar.getPassword(this.service, account);
   }
 
-  getToken(account) {
-    return this.keytar.getPassword(this.service, account);
-  }
-
-  deleteToken(account) {
-    return this.keytar.deletePassword(this.service, account);
+  deleteToken(account: string) {
+    return keytar.deletePassword(this.service, account);
   }
 }
 
