@@ -7,30 +7,60 @@
   "productName": "ibis",
   "scripts": {
     "test": "mocha",
-    "build": "webpack",
+    "build": "rimraf dist/ && webpack --env production --progress",
     "prepare": "husky install"
   },
   "dependencies": {
-    "keytar": "^7.7.0"
+    "keytar": "^7.7.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.16.0",
+    "@babel/preset-typescript": "^7.16.0",
+    "@svgr/webpack": "^6.1.0",
+    "@types/react": "^17.0.37",
+    "@types/react-dom": "^17.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.5.0",
+    "@typescript-eslint/parser": "^5.5.0",
+    "@vercel/webpack-asset-relocator-loader": "^1.7.0",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.2.3",
+    "babel-plugin-named-asset-import": "^0.3.7",
+    "babel-preset-react-app": "^10.0.0",
     "chai": "^4.3.4",
     "electron": "^13.1.8",
     "electron-packager": "^15.3.0",
+    "eslint": "^8.3.0",
     "eslint-config-prettier": "^8.3.0",
+    "eslint-config-react-app": "^6.0.0",
+    "eslint-plugin-flowtype": "^8.0.3",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.27.1",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "fork-ts-checker-webpack-plugin": "^6.5.0",
+    "html-webpack-plugin": "^5.5.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.1.2",
     "mocha": "^9.1.1",
     "prettier": "^2.3.0",
+    "rimraf": "^3.0.2",
     "sinon": "^11.1.2",
-    "sinon-test": "^3.1.1"
-  },
-  "babel": {
-    "presets": [
-      "react-app"
-    ]
+    "sinon-test": "^3.1.1",
+    "styled-jsx": "^4.0.1",
+    "terser-webpack-plugin": "^5.2.5",
+    "typescript": "^4.5.2",
+    "webpack": "^5.64.4",
+    "webpack-cli": "^4.9.1"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "prettier"
+    ]
   }
 }

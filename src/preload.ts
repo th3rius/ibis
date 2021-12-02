@@ -1,6 +1,7 @@
-const Client = require("./slsk/client");
+const Keychain = require("./util/keychain");
 
-var client = new Client();
 var keychain = new Keychain();
+
+keychain.setToken("test", "test");
 
 console.log("hi!");

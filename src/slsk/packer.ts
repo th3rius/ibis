@@ -4,9 +4,9 @@ import * as util from "util";
 const deflate = util.promisify(zlib.deflate);
 
 /**
- * SoulSeek messages are packed according to the protocol using instances of the
- * Packer class. A message consists of a length header, a code and its body.
- * Content is appended to the message according to the packing order.
+ * SoulSeek messages are packed according to the protocol using instances of
+ * the Packer class. A message consists of a length header, a code and its
+ * body. Content is appended to the message according to the packing order.
  */
 class Packer {
   private readonly body: Buffer[];

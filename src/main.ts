@@ -1,7 +1,5 @@
-"use strict";
-
-const path = require("path");
-const {app, protocol, crashReporter, BrowserWindow} = require("electron");
+import path from "path";
+import {app, BrowserWindow} from "electron";
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -9,9 +7,9 @@ function createWindow() {
     height: 600,
     maximizable: false,
     resizable: false,
-    // webPreferences: {
-    //   preload: path.join(__dirname, "preload.ts"),
-    // },
+    webPreferences: {
+      preload: path.join(__dirname, "preload.js"),
+    },
   });
 
   win.loadFile(path.join(__dirname, "index.html"));

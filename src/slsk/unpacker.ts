@@ -4,9 +4,9 @@ import * as util from "util";
 const inflate = util.promisify(zlib.inflate);
 
 /**
- * SoulSeek messages are read according to the protocol using instances of the
- * Unpacker class. A message consists of a length header, a code and its body.
- * Content is read to the message according to the unpacking order.
+ * SoulSeek messages are read according to the protocol using instances of
+ * the Unpacker class. A message consists of a length header, a code and its
+ * body. Content is read to the message according to the unpacking order.
  */
 class Unpacker {
   private code: number;
@@ -14,8 +14,8 @@ class Unpacker {
 
   constructor(private message: Buffer, byte = false) {
     this.offset = 4; // Ignore the message length
-    // `byte` indicates whether the message code is a single-byte long For some
-    // convoluted reason that's the case with some peer messages.
+    // `byte` indicates whether the message code is a single-byte long.
+    // For some convoluted reason that's the case with some peer messages.
     if (byte) {
       this.code = this.message.readUInt8(this.offset++);
     } else {
