@@ -1,6 +1,7 @@
 /// <reference types="node" />
 /// <reference types="react" />
 /// <reference types="react-dom" />
+/// <reference types="styled-jsx" />
 
 declare module "*.svg" {
   import * as React from "react";

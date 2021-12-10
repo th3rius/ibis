@@ -1,5 +1,5 @@
-import path from "path";
 import {app, BrowserWindow} from "electron";
+import * as path from "path";
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -8,10 +8,11 @@ function createWindow() {
     maximizable: false,
     resizable: false,
     webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
+      preload: require.resolve("./preload.ts"),
     },
   });
 
+  // FIXME relative to dist/
   win.loadFile(path.join(__dirname, "index.html"));
 }
 

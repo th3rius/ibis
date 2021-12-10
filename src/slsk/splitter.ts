@@ -3,13 +3,8 @@ import {Transform} from "stream";
 /**
  * Node Transform that delimits (splits and/or concatenates)
  * streams of bytes according to the SoulSeek protocol.
- *
- * @param messageLengthLimit If present, will destroy the
- * Transform upon trying to queue a message bigger than
- * `messageLengthLimit`. This allows aborting buffering early in
- * case the input is invalid data or a message excessively large.
  */
-function splitter(messageLengthLimit?: number) {
+function splitter() {
   let queue: Buffer[] = [];
   let queueLength = 0;
   let messageLength: number | undefined;
@@ -33,15 +28,6 @@ function splitter(messageLengthLimit?: number) {
       // We may receive multiple messages in a single chunk
       const data = bytes ?? Buffer.concat(queue, queueLength);
       messageLength = data.readUInt32LE() + 4;
-      if (messageLengthLimit && messageLengthLimit > messageLength) {
-        this.destroy(
-          new Error(
-            `Tried to queue a message with length of
-            ${messageLength} bytes, which is bigger than the
-            established limit of ${messageLengthLimit} bytes.`
-          )
-        );
-      }
       queue = [data];
       split.call(this, data);
     }

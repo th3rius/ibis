@@ -4,7 +4,9 @@ const path = require("path");
 const TerserPlugin = require("terser-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP;
+// Source maps are resource heavy and can cause
+// out of memory issue for large source files.
+const shouldUseSourceMap = Boolean(process.env.GENERATE_SOURCEMAP);
 
 module.exports = function (webpackEnv) {
   const isEnvDevelopment = webpackEnv.development === true;
@@ -24,7 +26,7 @@ module.exports = function (webpackEnv) {
     {
       mode: buildMode,
       devtool: sourceMapModule,
-      entry: path.resolve("src/index.tsx"),
+      entry: {index: path.resolve("src/index.tsx")},
       target: "electron-renderer",
       resolve: {
         extensions: [".mjs", ".js", ".ts", ".tsx", ".jsx"],
@@ -32,13 +34,16 @@ module.exports = function (webpackEnv) {
       output: {
         path: path.resolve("dist/"),
         pathinfo: isEnvDevelopment,
-        filename: "index.js",
+        filename: "[name].js",
+        // this defaults to 'window', but by setting it to 'this' then
+        // module chunks which are built will work in web workers as well.
         globalObject: "this",
       },
       optimization: {
         minimize: true,
         minimizer: [
           new TerserPlugin({
+            // Don't include third-party licenses
             extractComments: false,
           }),
         ],
@@ -48,12 +53,12 @@ module.exports = function (webpackEnv) {
         rules: [
           {
             test: /\.(ts|tsx)$/,
-            loader: "babel-loader",
+            loader: require.resolve("babel-loader"),
             options: {
-              presets: ["@babel/preset-react"],
+              presets: [require.resolve("@babel/preset-react")],
               plugins: [
                 [
-                  "babel-plugin-named-asset-import",
+                  require.resolve("babel-plugin-named-asset-import"),
                   {
                     loaderMap: {
                       svg: {
@@ -62,7 +67,15 @@ module.exports = function (webpackEnv) {
                       },
                     },
                   },
-                  "styled-jsx/babel",
+                ],
+                [
+                  require.resolve("styled-jsx/babel"),
+                  {
+                    optimizeForSpeed: isEnvProduction,
+                    sourceMaps: isEnvProduction && shouldUseSourceMap,
+                    // we don't need prefixes since we're always on chromium
+                    vendorPrefixes: false,
+                  },
                 ],
               ],
               cacheDirectory: true,
@@ -96,19 +109,15 @@ module.exports = function (webpackEnv) {
       },
       optimization: {
         minimize: true,
-        minimizer: [
-          new TerserPlugin({
-            extractComments: false,
-          }),
-        ],
+        minimizer: [new TerserPlugin()],
       },
       module: {
         rules: [
           {
             test: /\.(ts)$/,
-            loader: "babel-loader",
+            loader: require.resolve("babel-loader"),
             options: {
-              presets: ["@babel/preset-typescript"],
+              presets: [require.resolve("@babel/preset-typescript")],
               cacheDirectory: true,
               compact: isEnvProduction,
             },
@@ -117,7 +126,8 @@ module.exports = function (webpackEnv) {
             test: /\.(m?js|node)$/,
             parser: {amd: false},
             use: {
-              loader: "@vercel/webpack-asset-relocator-loader",
+              // Extract native node modules to the build output
+              loader: require.resolve("@vercel/webpack-asset-relocator-loader"),
               options: {
                 outputAssetBase: "assets",
                 production: isEnvProduction,

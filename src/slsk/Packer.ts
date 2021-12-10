@@ -8,7 +8,7 @@ const deflate = util.promisify(zlib.deflate);
  * the Packer class. A message consists of a length header, a code and its
  * body. Content is appended to the message according to the packing order.
  */
-class Packer {
+export default class Packer {
   private readonly body: Buffer[];
   private bodyLength: number;
 
@@ -75,5 +75,3 @@ class Packer {
     return Buffer.concat([header, body]);
   }
 }
-
-module.exports = Packer;

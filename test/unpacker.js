@@ -1,4 +1,4 @@
-const Unpacker = require("../src/slsk/unpacker");
+const Unpacker = require("../src/slsk/Unpacker");
 const assert = require("assert");
 
 describe("Unpacker", () => {
