@@ -41,12 +41,7 @@ module.exports = function (webpackEnv) {
       },
       optimization: {
         minimize: true,
-        minimizer: [
-          new TerserPlugin({
-            // Don't include third-party licenses
-            extractComments: false,
-          }),
-        ],
+        minimizer: [new TerserPlugin()],
       },
       module: {
         strictExportPresence: true,
