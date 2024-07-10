@@ -8,8 +8,8 @@ const inflate = util.promisify(zlib.inflate);
  * the Unpacker class. A message consists of a length header, a code and its
  * body. Content is read to the message according to the unpacking order.
  */
-class Unpacker {
-  private code: number;
+export default class Unpacker {
+  readonly code: number;
   private offset: number;
 
   constructor(private message: Buffer, byte = false) {
@@ -28,10 +28,21 @@ class Unpacker {
     return this.message.readUInt8(this.offset++);
   }
 
+  bool() {
+    return Boolean(this.message.readUInt8(this.offset++));
+  }
+
   uint32() {
     const content = this.message.readUInt32LE(this.offset);
     this.offset += 4;
     return content;
+  }
+
+  ip() {
+    return this.message
+      .subarray(this.offset, (this.offset += 4))
+      .reverse()
+      .join(".");
   }
 
   uint64() {
@@ -42,18 +53,18 @@ class Unpacker {
 
   str() {
     const length = this.message.readUInt32LE(this.offset);
-    this.offset += 4;
-    const content = this.message.toString("utf8", this.offset);
-    this.offset += length;
-    return content;
+    return this.message.toString(
+      "utf8",
+      (this.offset += 4),
+      (this.offset += length)
+    );
   }
 
   /*
    * Decompresses zlib encoded messages *in-place*.
    */
   async decompress() {
-    this.message = await inflate(this.message);
+    this.message = await inflate(this.message.subarray(this.offset));
+    this.offset = 0;
   }
 }
-
-module.exports = Unpacker;

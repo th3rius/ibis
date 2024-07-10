@@ -51,28 +51,6 @@ module.exports = function (webpackEnv) {
             loader: require.resolve("babel-loader"),
             options: {
               presets: [require.resolve("@babel/preset-react")],
-              plugins: [
-                [
-                  require.resolve("babel-plugin-named-asset-import"),
-                  {
-                    loaderMap: {
-                      svg: {
-                        ReactComponent:
-                          "@svgr/webpack?-svgo,+titleProp,+ref![path]",
-                      },
-                    },
-                  },
-                ],
-                [
-                  require.resolve("styled-jsx/babel"),
-                  {
-                    optimizeForSpeed: isEnvProduction,
-                    sourceMaps: isEnvProduction && shouldUseSourceMap,
-                    // we don't need prefixes since we're always on chromium
-                    vendorPrefixes: false,
-                  },
-                ],
-              ],
               cacheDirectory: true,
               compact: isEnvProduction,
             },

@@ -16,15 +16,15 @@ function splitter() {
       // and check again. Otherwise, wait for more.
       if (queueLength >= messageLength) {
         const data = bytes ?? Buffer.concat(queue, queueLength);
-        const message = data.slice(undefined, messageLength);
-        const tail = data.slice(messageLength);
+        const message = data.subarray(undefined, messageLength);
+        const tail = data.subarray(messageLength);
         queueLength -= messageLength;
         messageLength = undefined;
         queue = [tail];
         this.push(message);
         split.call(this, tail);
       }
-    } else if (queueLength >= 4 /* sanity check */) {
+    } else if (queueLength >= 4) {
       // We may receive multiple messages in a single chunk
       const data = bytes ?? Buffer.concat(queue, queueLength);
       messageLength = data.readUInt32LE() + 4;
